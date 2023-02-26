@@ -1,12 +1,17 @@
-#!/bin/sh
+#!/bin/bash
 RES=96
 NPX=`expr $RES + 1`
 NPY=`expr $RES + 1`
 HOME=/home/builder
 cd /home/builder/stochastic_physics/unit_tests
-/bin/bash /home/builder/stochastic_physics/unit_tests/ufs_linux.gnu
 ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
-/bin/bash /home/builder/.bashrc
+export PATH=/home/builder/opt/bin:$PATH
+export LD_LIBRARY_PATH=/home/builder/opt/lib
+export LD_LIBRARY_PATH=/home/builder/opt/lib64
+export CMAKE_PREFIX_PATH=/home/builder/opt
+export FC=mpifort
+export CC=mpicc
+export CXX=mpicxx
 if [ ! -f /home/builder/stochastic_physics/unit_tests/build_standalone.sh ];then
   echo "No build script! check build_standalone.sh in container"
   exit 1
