@@ -1,10 +1,10 @@
 From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2
 
-#CMD ["/bin/bash"]
-
-RUN echo $(pwd)
+CMD ["/bin/bash"]
 
 ENV HOME=/home/builder
+
+RUN echo $(pwd)
 
 COPY --chown=builder:builder . $HOME/stochastic_physics
 
@@ -16,4 +16,4 @@ WORKDIR $HOME/stochastic_physics/unit_tests
 
 RUN echo $(pwd); echo $(ls -l)
 
-CMD /bin/sh -c /home/builder/stochastic_physics/unit_tests/run_unit_test_container.sh
+CMD cd $HOME/stochastic_physics/unit_tests; /bin/sh -c /home/builder/stochastic_physics/unit_tests/run_unit_test_container.sh
