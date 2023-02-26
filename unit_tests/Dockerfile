@@ -1,6 +1,6 @@
 From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2
 
-CMD ["/bin/bash"]
+#CMD ["/bin/bash"]
 
 RUN echo $(pwd)
 
@@ -14,6 +14,6 @@ ENV USER=builder
 
 WORKDIR $HOME/stochastic_physics/unit_tests
 
-RUN echo $(PWD); echo $(ls -l)
+RUN echo $(pwd); echo $(ls -l)
 
-CMD /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh
+CMD /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; echo $(pwd)
