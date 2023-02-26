@@ -1,11 +1,3 @@
-FROM ufscommunity/input-data:stochastic
-RUN echo $(pwd)
-WORKDIR /tmp
-RUN echo $(ls -l)  
-#COPY INPUT ./
-#WORKDIR 
-#RUN 
-
 From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2
 
 CMD ["/bin/bash"]
@@ -22,4 +14,4 @@ ENV USER=builder
 
 WORKDIR $HOME/stochastic_physics/unit_tests
 
-RUN /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; echo $(ls /tmp)
+RUN /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; echo $(pwd)
