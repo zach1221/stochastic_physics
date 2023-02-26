@@ -9,5 +9,6 @@ if [ ! -f /home/builder/stochastic_physics/unit_tests/build_standalone.sh ];then
   exit 1
 fi
 /bin/sh -c /home/builder/stochastic_physics/unit_tests/build_standalone.sh
-cp -r /tmp/INPUT .
-echo $(ls -l)
+cp -r /tmp/INPUT /home/builder/stochastic_physics/unit_tests/
+echo $(ls)
+echo $(ls /home/builder/stochastic_physics/unit_tests)
