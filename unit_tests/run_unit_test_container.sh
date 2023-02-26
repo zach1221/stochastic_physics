@@ -5,6 +5,8 @@ NPY=`expr $RES + 1`
 HOME=/home/builder
 cd /home/builder/stochastic_physics/unit_tests
 /bin/bash /home/builder/stochastic_physics/unit_tests/ufs_linux.gnu
+ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
+/bin/bash /home/builder/.bashrc
 if [ ! -f /home/builder/stochastic_physics/unit_tests/build_standalone.sh ];then
   echo "No build script! check build_standalone.sh in container"
   exit 1
