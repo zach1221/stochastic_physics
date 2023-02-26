@@ -11,4 +11,4 @@ fi
 /bin/sh -c /home/builder/stochastic_physics/unit_tests/build_standalone.sh
 cp -r /tmp/INPUT /home/builder/stochastic_physics/unit_tests/
 echo $(ls)
-echo $(ls /home/builder/stochastic_physics/unit_tests)
+echo $(which sed)
