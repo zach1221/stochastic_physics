@@ -14,4 +14,4 @@ ENV USER=builder
 
 WORKDIR $HOME/stochastic_physics/unit_tests
 
-RUN /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; echo $(pwd)
+CMD /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; echo $(pwd)
