@@ -16,4 +16,4 @@ WORKDIR $HOME/stochastic_physics/unit_tests
 
 RUN echo $(pwd); echo $(ls -l)
 
-CMD cd $HOME/stochastic_physics/unit_tests; /bin/sh -c build_standalone.sh; cp /tmp/INPUT .; echo $(ls -l)
+CMD /bin/sh -c /home/builder/stochastic_physics/unit_tests/run_unit_test_container.sh
