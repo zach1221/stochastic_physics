@@ -24,6 +24,6 @@ jobs:
          echo "docker build stochastic_physics unit test image"
          docker volume rm -f DataVolume
          docker run -d --rm -v DataVolume:/tmp ufscommunity/input-data:stochastic        
-         docker run --rm -v DataVolume:/tmp stochastic_physics_test /bin/bash
+         docker run --rm -v DataVolume:/tmp stochastic_physics_test
 
 
