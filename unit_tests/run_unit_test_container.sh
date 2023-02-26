@@ -11,6 +11,7 @@ fi
 /bin/sh -c /home/builder/stochastic_physics/unit_tests/build_standalone.sh
 cp -r /tmp/INPUT /home/builder/stochastic_physics/unit_tests/
 echo $(ls)
+echo $(ls *.x)
 mkdir -p RESTART
 
 # test 3 different domain decompositions and compare to baseline
