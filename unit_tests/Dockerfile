@@ -1,6 +1,16 @@
+FROM ufscommunity/input-data:stochastic
+RUN echo $(pwd)
+WORKDIR /tmp
+RUN echo $(ls -l)  
+#COPY INPUT ./
+#WORKDIR 
+#RUN 
+
 From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2
 
 CMD ["/bin/bash"]
+
+RUN echo $(pwd)
 
 ENV HOME=/home/builder
 
