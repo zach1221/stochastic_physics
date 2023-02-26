@@ -12,4 +12,4 @@ ENV USER=builder
 
 WORKDIR $HOME/stochastic_physics/unit_tests
 
-RUN /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh
+RUN /bin/sh -c $HOME/stochastic_physics/unit_tests/build_standalone.sh; ls /tmp
