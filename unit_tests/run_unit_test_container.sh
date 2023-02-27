@@ -4,7 +4,7 @@ NPX=`expr $RES + 1`
 NPY=`expr $RES + 1`
 HOME=/home/builder
 cd /home/builder/stochastic_physics/unit_tests
-ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
+export ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
 export PATH=/home/builder/opt/bin:$PATH
 export LD_LIBRARY_PATH=/home/builder/opt/lib
 export LD_LIBRARY_PATH=/home/builder/opt/lib64
@@ -12,11 +12,12 @@ export CMAKE_PREFIX_PATH=/home/builder/opt
 export FC=mpifort
 export CC=mpicc
 export CXX=mpicxx
+/bin/bash ufs_linux.gnu
 if [ ! -f /home/builder/stochastic_physics/unit_tests/build_standalone.sh ];then
   echo "No build script! check build_standalone.sh in container"
   exit 1
 fi
-/bin/sh -c /home/builder/stochastic_physics/unit_tests/build_standalone.sh
+/bin/bash /home/builder/stochastic_physics/unit_tests/build_standalone.sh
 cp -r /tmp/INPUT /home/builder/stochastic_physics/unit_tests/
 echo $(ls)
 echo $(ls *.x)
