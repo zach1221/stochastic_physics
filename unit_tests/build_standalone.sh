@@ -1,15 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 compile_all=1
 DEBUG=1
 
 #rm standalone_stochy.x
-FMS_ROOT=/home/builder/opt
-NETCDF=/home/builder/opt
+export ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
+export PATH=/home/builder/opt/bin:$PATH
+export LD_LIBRARY_PATH=/home/builder/opt/lib
+export LD_LIBRARY_PATH=/home/builder/opt/lib64
+export CMAKE_PREFIX_PATH=/home/builder/opt
+export FC=mpifort
+export CC=mpicc
+export CXX=mpicxx
+/bin/bash ufs_linux.gnu
+export FMS_ROOT=/home/builder/opt
+export NETCDF=/home/builder/opt
 echo ${FMS_ROOT}
-FC=mpif90
-FMS_INC=${FMS_ROOT}/include_r4
-FMS_LIB=${FMS_ROOT}/lib
-INCS="-I. -I${FMS_INC} -I${NETCDF}/include"
+#FC=mpif90
+#FMS_INC=${FMS_ROOT}/include_r4
+#FMS_LIB=${FMS_ROOT}/lib
+#INCS="-I. -I${FMS_INC} -I${NETCDF}/include"
 if [ $DEBUG -eq 1 ]; then
    FLAGS="-DDEBUG -ggdb -fbacktrace -cpp -fcray-pointer -ffree-line-length-none -fno-range-check -fdefault-real-8 -fdefault-double-8 -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -I. -fopenmp -c -Wargument-mismatch "$INCS
 else
