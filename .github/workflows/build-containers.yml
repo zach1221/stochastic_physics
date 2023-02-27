@@ -12,18 +12,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Docker Stochastic_Physics Unit Test Image .......
+    name: Stochastic_Physics Unit Test .......
     steps:
       - uses: actions/checkout@v3        
-      - name: docker build stochastic_physics unit test image
+      - name: docker base image build
         run: | 
-         echo "docker build stochastic_physics unit test image"
+         echo "docker base image build"
          docker build -t stochastic_physics_test --no-cache --compress -f ./unit_tests/Dockerfile .
-      - name: docker run stochastic_physics unit test image
+      - name: Prepare docker input data volume
         run: | 
-         echo "docker build stochastic_physics unit test image"
+         echo "Prepare docker input data volume"
          docker volume rm -f DataVolume
-         docker run -d --rm -v DataVolume:/tmp ufscommunity/input-data:stochastic        
+         docker run -d --rm -v DataVolume:/tmp ufscommunity/input-data:stochastic
+      - name: Run docker stochastic_physics unit test
+        run: | 
+         echo "Run docker stochastic_physics unit test"      
          docker run --rm -v DataVolume:/tmp -i --shm-size=1gb stochastic_physics_test
-
 
