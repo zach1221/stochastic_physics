@@ -1,6 +1,6 @@
 #!/bin/bash
-compile_all=1
-DEBUG=1
+export compile_all=1
+export DEBUG=1
 
 #rm standalone_stochy.x
 export ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
@@ -16,9 +16,9 @@ export FMS_ROOT=/home/builder/opt
 export NETCDF=/home/builder/opt
 echo ${FMS_ROOT}
 #FC=mpif90
-#FMS_INC=${FMS_ROOT}/include_r4
-#FMS_LIB=${FMS_ROOT}/lib
-#INCS="-I. -I${FMS_INC} -I${NETCDF}/include"
+export FMS_INC=${FMS_ROOT}/include_r4
+export FMS_LIB=${FMS_ROOT}/lib
+export INCS="-I. -I${FMS_INC} -I${NETCDF}/include"
 if [ $DEBUG -eq 1 ]; then
    FLAGS="-DDEBUG -ggdb -fbacktrace -cpp -fcray-pointer -ffree-line-length-none -fno-range-check -fdefault-real-8 -fdefault-double-8 -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -I. -fopenmp -c -Wargument-mismatch "$INCS
 else
