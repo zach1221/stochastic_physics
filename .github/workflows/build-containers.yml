@@ -2,7 +2,7 @@
 # Rename the file extension to "._yaml" (remove "_") to enable
 ##############################################################
 
-name:  Build Stochastic_Physics Unit Test Images (Docker) 
+name:  Build and Run Docker Stochastic_Physics Unit Test Image 
 
 on:
   # run it on push to the default repository branch
