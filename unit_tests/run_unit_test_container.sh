@@ -34,6 +34,7 @@ sed -i -e "s/RES/$RES/g" input.nml
 sed -i -e "s/_STOCHINI_/.false./g" input.nml
 #export OMP_NUM_THREADS=2
 #module list
+mpirun --help
 mpirun -np 6 /home/builder/stochastic_physics/unit_tests/standalone_stochy.x
 mkdir stochy_out
 #mv workg* stochy_out
