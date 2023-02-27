@@ -18,12 +18,12 @@ jobs:
       - name: docker build stochastic_physics unit test image
         run: | 
          echo "docker build stochastic_physics unit test image"
-         docker build -t stochastic_physics_test -f ./unit_tests/Dockerfile .
+         docker build -t stochastic_physics_test --no-cache --compress -f ./unit_tests/Dockerfile .
       - name: docker run stochastic_physics unit test image
         run: | 
          echo "docker build stochastic_physics unit test image"
          docker volume rm -f DataVolume
          docker run -d --rm -v DataVolume:/tmp ufscommunity/input-data:stochastic        
-         docker run --rm -v DataVolume:/tmp stochastic_physics_test
+         docker run --rm -v DataVolume:/tmp -i --shm-size=1gb stochastic_physics_test
 
 
