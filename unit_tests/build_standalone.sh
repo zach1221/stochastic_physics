@@ -18,6 +18,7 @@ echo ${FMS_ROOT}
 #FC=mpif90
 export FMS_INC=${FMS_ROOT}/include_r4
 export FMS_LIB=${FMS_ROOT}/lib
+export ESMF_LIB=${FMS_ROOT}/lib
 export INCS="-I. -I${FMS_INC} -I${NETCDF}/include"
 if [ $DEBUG -eq 1 ]; then
    FLAGS="-DDEBUG -ggdb -fbacktrace -cpp -fcray-pointer -ffree-line-length-none -fno-range-check -fdefault-real-8 -fdefault-double-8 -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -I. -fopenmp -c -Wargument-mismatch "$INCS
