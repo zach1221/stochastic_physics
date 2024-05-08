@@ -3,7 +3,6 @@ program  standalone_stochy
 use stochastic_physics,  only : init_stochastic_physics,run_stochastic_physics
 use get_stochy_pattern_mod,  only : write_stoch_restart_atm
 
-use atmosphere_stub_mod, only: Atm,atmosphere_init_stub
 !use mpp_domains
 use mpp_mod,             only: mpp_set_current_pelist,mpp_get_current_pelist,mpp_init,mpp_pe,mpp_npes ,mpp_declare_pelist,mpp_root_pe
 use mpp_domains_mod,     only: mpp_broadcast_domain,MPP_DOMAIN_TIME,mpp_domains_init ,mpp_domains_set_stack_size

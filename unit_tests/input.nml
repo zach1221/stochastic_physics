@@ -34,39 +34,29 @@
 /
 
 &fv_grid_nml
-       grid_file = 'INPUT/CRES_grid_spec.nc'
+       grid_file = 'INPUT/grid_spec.nc'
 /
 
 &fv_core_nml
-       layout   = LOX,LOY
+       layout   = 1,1
        io_layout = 1,1
-       npx      = NPX,
-       npy      = NPY,
+       npx      = 97,
+       npy      = 97,
        ntiles   = 6,
        grid_type = -1
 /
 
 &gfs_physics_nml
-  do_ca          = .true.
-  ca_sgs         = CA_SGS 
-  ca_global      = CA_GLOBAL
-  nca            = 1
-  scells         = 2600
-  tlives         = 1800
-  nseed          = 100
-  nfracseed      = 0.5
-  rcell          = 0.72
-  ca_trigger     = .True.
-  ca_entr        = .False.
-  ca_closure     = .False.
-  nca_g          = 3
-  ncells_g       = 1
-  nlives_g       = 100
-  nseed_g        = 100
-  ca_smooth      = .true.
-  nspinup        = 100
-  iseed_ca       = 22345
-  nsmooth        = 100
-  ca_amplitude   = 0.35
-  warm_start     = WARM_START
+       do_sppt        = .true.
+/
+&nam_stochy
+  SPPT=0.8,0.4,0.1
+  SPPT_TAU=21600,86400,216000
+  SPPT_LSCALE=500000,1000000,2000000
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SPPT=3,
+  STOCHINI=.false.
+/
+&nam_sfcperts
 /
