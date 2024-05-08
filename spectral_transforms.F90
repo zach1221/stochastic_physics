@@ -20,7 +20,7 @@ module spectral_transforms
 
 !
       integer, public, allocatable :: lat1s_a(:), lon_dims_a(:)
-      real(kind_dbl_prec), public, allocatable, dimension(:) ::  colrad_a, wgt_a, rcs2_a, &
+      real, public, allocatable, dimension(:) ::  colrad_a, wgt_a, rcs2_a, &
                                        sinlat_a, coslat_a
 
 
@@ -268,7 +268,7 @@ module spectral_transforms
       implicit none
       integer ,intent(in) :: ldx,ldy,n,nvars
       integer init,n1,n2,i,j
-      real(kind_dbl_prec) x(ldx,nvars),y(ldy,nvars),table(44002),wrk
+      real x(ldx,nvars),y(ldy,nvars),table(44002),wrk
  
       IF (init.ne.0) THEN
          CALL rffti_stochy(n,table)
@@ -297,8 +297,8 @@ module spectral_transforms
 
       implicit none
 
-      real(kind_dbl_prec), intent(inout) :: R(:)  
-      real(kind_dbl_prec), intent(inout) :: WSAVE(44002)
+      real, intent(inout) :: R(:)  
+      real, intent(inout) :: WSAVE(44002)
 
       integer :: N
 
@@ -311,7 +311,7 @@ module spectral_transforms
 
       implicit none
 
-      REAL(kind_dbl_prec), intent(inout) ::    WSAVE(44002)
+      REAL, intent(inout) ::    WSAVE(44002)
       integer :: N
 
       IF (N .EQ. 1) RETURN
@@ -325,10 +325,10 @@ module spectral_transforms
       implicit none
 
       integer, intent(in) :: N
-      real(kind_dbl_prec), intent(inout) :: CH(44002)
-      real(kind_dbl_prec), intent(inout) :: C(:)
-      real(kind_dbl_prec), intent(inout) :: WA(:)
-      real(kind_dbl_prec), intent(inout) :: RFAC(:)
+      real, intent(inout) :: CH(44002)
+      real, intent(inout) :: C(:)
+      real, intent(inout) :: WA(:)
+      real, intent(inout) :: RFAC(:)
 
       integer :: NF,NA,L1,IW,IP,L2,IDO,IDL1,IX2,IX3,IX4
       integer :: K1,I
@@ -397,14 +397,14 @@ module spectral_transforms
       implicit none
       
       integer, intent(in) :: N
-      REAL(kind_dbl_prec), intent(inout) :: WA(:)
-      REAL(kind_dbl_prec), intent(inout) :: RFAC(:) 
+      REAL, intent(inout) :: WA(:)
+      REAL, intent(inout) :: RFAC(:) 
 
       integer :: NTRYH(4)
       integer :: NL,NF, I, J, NQ,NR,LD,FI,IS,ID,L1,L2,IP
       integer :: NTRY, NFM1, K1,II, IB, IDO, IPM, IC
-      REAL(kind_dbl_prec), parameter :: TPI=6.28318530717959
-      real(kind_dbl_prec)    :: ARG,ARGLD,ARGH, TI2,TI4
+      REAL, parameter :: TPI=6.28318530717959
+      real    :: ARG,ARGLD,ARGH, TI2,TI4
 
       DATA NTRYH(:) /4,2,3,5/
 
@@ -480,12 +480,12 @@ module spectral_transforms
      
       integer, intent(in) :: IDO
       integer, intent(in) :: L1
-      real(kind_dbl_prec), intent(inout) :: CC(IDO,2,L1)
-      real(kind_dbl_prec), intent(inout) :: CH(IDO,L1,2)
-      real(kind_dbl_prec), intent(inout) :: WA1(:)
+      real, intent(inout) :: CC(IDO,2,L1)
+      real, intent(inout) :: CH(IDO,L1,2)
+      real, intent(inout) :: WA1(:)
 
       integer :: K,I,IC,IDP2
-      real(kind_dbl_prec)    :: TR2,TI2
+      real    :: TR2,TI2
       DO 101 K=1,L1
          CH(1,K,1) = CC(1,1,K)+CC(IDO,2,K)
          CH(1,K,2) = CC(1,1,K)-CC(IDO,2,K)
@@ -524,16 +524,16 @@ module spectral_transforms
       implicit none
 
       integer, intent(in) :: IDO,L1
-      real(kind_dbl_prec), intent(inout) :: CC(IDO,3,L1)
-      real(kind_dbl_prec), intent(inout) :: CH(IDO,L1,3)
-      real(kind_dbl_prec), intent(inout) :: WA1(:)
-      real(kind_dbl_prec), intent(inout) :: WA2(:)
+      real, intent(inout) :: CC(IDO,3,L1)
+      real, intent(inout) :: CH(IDO,L1,3)
+      real, intent(inout) :: WA1(:)
+      real, intent(inout) :: WA2(:)
 
-      REAL(kind_dbl_prec), parameter :: TAUR= -.5
-      REAL(kind_dbl_prec), parameter :: TAUI=.866025403784439
+      REAL, parameter :: TAUR= -.5
+      REAL, parameter :: TAUI=.866025403784439
       integer         :: I,K,IDP2,IC
-      real(kind_dbl_prec)            :: TR2,CR2,TI1,CI2,CR3,CI3,DR2,DR3,DI2,DI3
-      real(kind_dbl_prec)            :: TI2,TI4
+      real            :: TR2,CR2,TI1,CI2,CR3,CI3,DR2,DR3,DI2,DI3
+      real            :: TI2,TI4
 
 
       DO 101 K=1,L1
@@ -577,16 +577,16 @@ module spectral_transforms
       implicit none
 
       integer, intent(in) :: IDO,L1
-      real(kind_dbl_prec), intent(inout) :: CC(IDO,4,L1)
-      real(kind_dbl_prec), intent(inout) :: CH(IDO,L1,4)
-      real(kind_dbl_prec), intent(inout) :: WA1(:)
-      real(kind_dbl_prec), intent(inout) :: WA2(:)
-      real(kind_dbl_prec), intent(inout) :: WA3(:)
+      real, intent(inout) :: CC(IDO,4,L1)
+      real, intent(inout) :: CH(IDO,L1,4)
+      real, intent(inout) :: WA1(:)
+      real, intent(inout) :: WA2(:)
+      real, intent(inout) :: WA3(:)
 
-      REAL(kind_dbl_prec), parameter :: SQRT2=1.414213562373095
+      REAL, parameter :: SQRT2=1.414213562373095
       integer         :: I,K,IDP2,IC
-      real(kind_dbl_prec)            :: TR1,TR2,TR3,TR4,TI1,TI2,TI3,TI4
-      real(kind_dbl_prec)            :: CI2,CI3,CI4,CR2,CR3,CR4
+      real            :: TR1,TR2,TR3,TR4,TI1,TI2,TI3,TI4
+      real            :: CI2,CI3,CI4,CR2,CR3,CR4
       DO 101 K=1,L1
          TR1 = CC(1,1,K)-CC(IDO,4,K)
          TR2 = CC(1,1,K)+CC(IDO,4,K)
@@ -650,19 +650,11 @@ module spectral_transforms
 
 
       SUBROUTINE RADB5_STOCHY (IDO,L1,CC,CH,WA1,WA2,WA3,WA4)
-      implicit none
-      integer, intent(in) :: L1, IDO
-      REAL(kind_dbl_prec) :: CC(IDO,5,L1), CH(IDO,L1,5), WA1(*), WA2(*), WA3(*), WA4(*)
-      REAL(kind_dbl_prec), parameter :: TR11=0.309016994374947
-      REAL(kind_dbl_prec), parameter :: TI11= 0.951056516295154
-      REAL(kind_dbl_prec), parameter :: TR12=-0.809016994374947
-      REAL(kind_dbl_prec), parameter :: TI12=0.587785252292473
-      integer :: k,IDP2,I,IC
-      real(kind_dbl_prec) :: &
-           TI5,TI4,TR2,TR3,CR2,CR3,CI5,CI4, &
-           TI2,TI3,TR5,TR4, &
-           CI2,CI3,CR5,CR4, &
-           DR3,DR4,DI3,DI4,DR5,DR2,DI5,DI2
+      DIMENSION  CC(IDO,5,L1), CH(IDO,L1,5), WA1(*), WA2(*), WA3(*), WA4(*)
+      REAL, parameter :: TR11=0.309016994374947
+      REAL, parameter :: TI11= 0.951056516295154
+      REAL, parameter :: TR12=-0.809016994374947
+       REAL, parameter :: TI12=0.587785252292473
       DO 101 K=1,L1
          TI5 = CC(1,3,K)+CC(1,3,K)
          TI4 = CC(1,5,K)+CC(1,5,K)
@@ -722,14 +714,11 @@ module spectral_transforms
       RETURN
       END
 
+
       SUBROUTINE RADBG_STOCHY (IDO,IP,L1,IDL1,CC,C1,C2,CH,CH2,WA)
-      implicit none
-      INTEGER :: IDO,IP,L1,IDL1
-      REAL(kind_dbl_prec) :: CH(IDO,L1,IP), CC(IDO,IP,L1), C1(IDO,L1,IP), C2(IDL1,IP), &
+      DIMENSION CH(IDO,L1,IP), CC(IDO,IP,L1), C1(IDO,L1,IP), C2(IDL1,IP), &
                 CH2(IDL1,IP) , WA(*)
-      REAL(kind_dbl_prec), parameter :: TPI=6.28318530717959
-      REAL(kind_dbl_prec) :: ARG, DCP, DSP, AI1, AI2, AR1, AR1H, DC2, DS2, AR2, AR2H
-      INTEGER :: I,J,K,IK, IDP2, IPP2, IPPH, JC, J2, IC, L, IS, IDIJ, NBD, LC
+      REAL, parameter :: TPI=6.28318530717959
       ARG = TPI/FLOAT(IP)
       DCP = COS(ARG)
       DSP = SIN(ARG)
@@ -923,7 +912,7 @@ module spectral_transforms
       real(kind_dbl_prec) cons0     !constant
       integer              indlsev,jbasev
       integer              indlsod,jbasod
-      real(kind_dbl_prec)  rerth
+      real(kind_evod)  rerth
 
       include 'function2'
 
@@ -1107,7 +1096,7 @@ module spectral_transforms
 
       integer              indlsev,jbasev
       integer              indlsod,jbasod
-      real(kind_dbl_prec)  rerth
+      real(kind_evod)  rerth
 
       include 'function2'
 !......................................................................
@@ -1476,6 +1465,7 @@ module spectral_transforms
           i2 = iindx2(i)
           if(wrk(i) .eq. 0.0) then
             write(6,*) ' la2ga: error'
+            call sleep(2)
             stop
           endif
         enddo
@@ -1812,7 +1802,7 @@ module spectral_transforms
 
       real(kind=kind_dbl_prec) cons0     !constant
       real(kind=kind_dbl_prec) cons2     !constant
-      real(kind_dbl_prec)  rerth
+      real  rerth
 
       integer                  indlsev,jbasev
       integer                  indlsod,jbasod
@@ -1982,12 +1972,7 @@ module spectral_transforms
                                              cons2 = 2.d0, cons4 = 4.d0, &
                                              cons180 = 180.d0, &
                                              cons0p25 = 0.25d0
-#ifdef NO_QUAD_PRECISION
-      real(kind=kind_qdt_prec), parameter :: eps = 1.d-12
-#else
       real(kind=kind_qdt_prec), parameter :: eps = 1.d-20
-#endif
-
 !
 ! for better accuracy to select smaller number
 !     eps = 1.d-12
