@@ -34,14 +34,14 @@
 /
 
 &fv_grid_nml
-       grid_file = 'INPUT/CRES_grid_spec.nc'
+       grid_file = 'INPUT/grid_spec.nc'
 /
 
 &fv_core_nml
-       layout   = LOX,LOY
+       layout   = 1,4
        io_layout = 1,1
-       npx      = NPX,
-       npy      = NPY,
+       npx      = 97,
+       npy      = 97,
        ntiles   = 6,
        grid_type = -1
 /
@@ -71,7 +71,7 @@
   ISEED_SHUM=1,
   ISEED_SKEB=2,
   ISEED_SPPT=3,
-  STOCHINI=_STOCHINI_
+  STOCHINI=.false.
 /
 &nam_sfcperts
   lndp_type=2
