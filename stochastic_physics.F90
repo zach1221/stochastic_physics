@@ -2,7 +2,7 @@
 !! the stochastic physics random pattern generators
 module stochastic_physics
 
-use kinddef, only : kind_phys, kind_dbl_prec
+use kinddef, only : kind_dbl_prec
 
 implicit none
 
@@ -22,15 +22,11 @@ contains
 subroutine init_stochastic_physics(levs, blksz, dtp, sppt_amp, input_nml_file_in, fn_nml, nlunit, &
     xlon,xlat, &
     do_sppt_in, do_shum_in, do_skeb_in, lndp_type_in, n_var_lndp_in, use_zmtnblck_out, skeb_npass_out,    &
-    lndp_var_list_out, lndp_prt_list_out,                         &
-    n_var_spp_in, spp_var_list_out, spp_prt_list_out, spp_stddev_cutoff_out, do_spp_in,     &
-    ak, bk, nthreads, mpiroot, mpicomm, iret) 
+    lndp_var_list_out, lndp_prt_list_out, ak, bk, nthreads, mpiroot, mpicomm, iret) 
 !\callgraph
 !use stochy_internal_state_moa
 use stochy_data_mod, only : init_stochdata,gg_lats,gg_lons,nsppt, &
-                            rad2deg,INTTYP,wlon,rnlat,gis_stochy, &
-                            vfact_skeb,vfact_sppt,vfact_shum,skeb_vpts,skeb_vwts,sl, &
-                            nspp, vfact_spp
+                            rad2deg,INTTYP,wlon,rnlat,gis_stochy,vfact_skeb,vfact_sppt,vfact_shum,skeb_vpts,skeb_vwts,sl
 use stochy_namelist_def
 use spectral_transforms,only:colrad_a,latg,lonf,skeblevs
 use mpi_wrapper, only : mpi_wrapper_initialize,mype,npes,is_rootpe
@@ -42,30 +38,27 @@ integer, intent(out)                    :: iret
 
 integer,                  intent(in)    :: levs, nlunit, nthreads, mpiroot, mpicomm
 integer,                  intent(in)    :: blksz(:)
-real(kind=kind_phys), intent(in)    :: dtp
-real(kind=kind_phys), intent(out)   :: sppt_amp
+real(kind=kind_dbl_prec), intent(in)    :: dtp
+real(kind=kind_dbl_prec), intent(out)   :: sppt_amp
 character(len=*),         intent(in)    :: input_nml_file_in(:)
 character(len=*),         intent(in)    :: fn_nml
-real(kind=kind_phys), intent(in)    :: xlon(:,:)
-real(kind=kind_phys), intent(in)    :: xlat(:,:)
-logical,                  intent(in), optional    :: do_sppt_in, do_shum_in, do_skeb_in ,do_spp_in
+real(kind=kind_dbl_prec), intent(in)    :: xlon(:,:)
+real(kind=kind_dbl_prec), intent(in)    :: xlat(:,:)
+logical,                  intent(in)    :: do_sppt_in, do_shum_in, do_skeb_in 
 integer,                  intent(in)    :: lndp_type_in, n_var_lndp_in
-integer,                  intent(in), optional :: n_var_spp_in
-real(kind=kind_phys), intent(in)    :: ak(:), bk(:) 
+real(kind=kind_dbl_prec), intent(in)    :: ak(:), bk(:) 
 logical,                  intent(out)   :: use_zmtnblck_out
-integer,                  intent(out) :: skeb_npass_out
-character(len=3),         dimension(:), intent(out) :: lndp_var_list_out
-real(kind=kind_phys), dimension(:), intent(out) :: lndp_prt_list_out
-character(len=3),         dimension(:), intent(out), optional :: spp_var_list_out
-real(kind=kind_phys), dimension(:), intent(out), optional :: spp_prt_list_out
-real(kind=kind_phys), dimension(:), intent(out), optional :: spp_stddev_cutoff_out
+integer,                  intent(out)   :: skeb_npass_out
+character(len=3), dimension(max_n_var_lndp),         intent(out) :: lndp_var_list_out
+real(kind=kind_dbl_prec), dimension(max_n_var_lndp), intent(out) :: lndp_prt_list_out
+
 
 ! Local variables
-real(kind=kind_phys), parameter     :: con_pi =4.0d0*atan(1.0d0)
+real(kind=kind_dbl_prec), parameter     :: con_pi =4.0d0*atan(1.0d0)
 integer :: nblks,len
 real*8 :: PRSI(levs),PRSL(levs),dx
 real, allocatable :: skeb_vloc(:)
-integer :: k,kflip,latghf,blk,k2,v,i
+integer :: k,kflip,latghf,blk,k2
 character*2::proc
 
 ! Initialize MPI and OpenMP
@@ -93,6 +86,7 @@ enddo
 ! replace
 INTTYP=0 ! bilinear interpolation
 call init_stochdata(levs,dtp,input_nml_file_in,fn_nml,nlunit,iret)
+print*,'back from init stochdata',iret
 if (iret .ne. 0) return
 ! check namelist entries for consistency
 if (do_sppt_in.neqv.do_sppt) then
@@ -113,38 +107,22 @@ else if (do_skeb_in.neqv.do_skeb) then
 else if (lndp_type_in /= lndp_type) then
    write(0,'(*(a))') 'Logic error in stochastic_physics_init: incompatible', &
                    & ' namelist settings lndp_type in physics and nam_sfcperts'
+   print*,'lndp_type',lndp_type_in,lndp_type
    iret = 20 
    return
 else if (n_var_lndp_in /=  n_var_lndp) then
+   print*,'n_var_lndp',n_var_lndp_in , n_var_lndp
    write(0,'(*(a))') 'Logic error in stochastic_physics_init: incompatible', &
                    & ' namelist settings n_var_lndp in physics nml, and lndp_* in nam_sfcperts'
    iret = 20 
-   return
-else if (n_var_spp_in .ne. n_var_spp) then
-   write(0,'(*(a))') 'Logic error in stochastic_physics_init: incompatible', &
-                   & ' namelist settings n_var_spp in physics nml, and spp_* in nam_sppperts'
-   write(0,*) 'n_var_spp, n_var_spp_in', n_var_spp, n_var_spp_in
-   iret = 20
-   return
-else if (do_spp_in.neqv.do_spp) then
-   write(0,'(*(a))') 'Logic error in stochastic_physics_init: incompatible', &
-                   & ' namelist settings do_spp and spp'
-   iret = 20
    return
 end if
 ! update remaining model configuration parameters from namelist
 use_zmtnblck_out=use_zmtnblck
 skeb_npass_out=skeb_npass
-if (n_var_lndp>0) then
-   lndp_var_list_out=lndp_var_list(1:n_var_lndp)
-   lndp_prt_list_out=lndp_prt_list(1:n_var_lndp)
-endif
-if (n_var_spp>0) then
-   spp_var_list_out=spp_var_list(1:n_var_spp)
-   spp_prt_list_out=spp_prt_list(1:n_var_spp)
-   spp_stddev_cutoff_out=spp_stddev_cutoff(1:n_var_spp)
-endif
-if ( (.NOT. do_sppt) .AND. (.NOT. do_shum) .AND. (.NOT. do_skeb)  .AND. (lndp_type==0) .AND. (.NOT. do_spp)) return
+lndp_var_list_out=lndp_var_list
+lndp_prt_list_out=lndp_prt_list
+if ( (.NOT. do_sppt) .AND. (.NOT. do_shum) .AND. (.NOT. do_skeb)  .AND. (lndp_type==0) ) return
 allocate(sl(levs))
 do k=1,levs
    sl(k)= 0.5*(ak(k)/101300.+bk(k)+ak(k+1)/101300.0+bk(k+1)) ! si are now sigmas
@@ -225,19 +203,6 @@ if (do_shum) then
       if (is_rootpe())  print *,'shum vert profile',k,sl(k),vfact_shum(k)
    enddo
 endif
-if (do_spp) then
-   allocate(vfact_spp(levs))
-   do k=1,levs
-      if (sl(k) .lt. spp_sigtop1(1) .and. sl(k) .gt. spp_sigtop2(1)) then
-         vfact_spp(k) = (sl(k)-spp_sigtop2(1))/(spp_sigtop1(1)-spp_sigtop2(1))
-      else if (sl(k) .lt. spp_sigtop2(1)) then
-          vfact_spp(k) = 0.0
-      else
-          vfact_spp(k) = 1.0
-      endif
-      if (is_rootpe())  print *,'spp vert profile',k,sl(k),vfact_spp(k)
-   enddo
-endif
 ! get interpolation weights
 ! define gaussian grid lats and lons
 latghf=latg/2
@@ -274,7 +239,7 @@ real,intent(in) :: geoLonT(nx,ny),geoLatT(nx,ny)
 logical,intent(in) :: pert_epbl_in,do_sppt_in
 integer,intent(in)    :: mpiroot, mpicomm
 integer, intent(out) :: iret
-real(kind=kind_phys), parameter     :: con_pi =4.0d0*atan(1.0d0)
+real(kind=kind_dbl_prec), parameter     :: con_pi =4.0d0*atan(1.0d0)
 
 real :: dx
 integer :: k,latghf,km
@@ -332,42 +297,39 @@ end subroutine init_stochastic_physics_ocn
 !allocates and polulates the necessary arrays
 
 subroutine run_stochastic_physics(levs, kdt, fhour, blksz, sppt_wts, shum_wts, skebu_wts,  & 
-                                  skebv_wts, sfc_wts, spp_wts, nthreads)
+                                  skebv_wts, sfc_wts,nthreads)
 
 !\callgraph
 !use stochy_internal_state_mod
 use stochy_data_mod, only : nshum,rpattern_shum,rpattern_sppt,nsppt,rpattern_skeb,nskeb,&
-                            gis_stochy,vfact_sppt,vfact_shum,vfact_skeb, rpattern_sfc, nlndp, &
-                            rpattern_spp, nspp, vfact_spp
+                            gis_stochy,vfact_sppt,vfact_shum,vfact_skeb, rpattern_sfc, nlndp
 use get_stochy_pattern_mod,only : get_random_pattern_scalar,get_random_pattern_vector, & 
-                                  get_random_pattern_sfc,get_random_pattern_spp
+                                  get_random_pattern_sfc
 use stochy_namelist_def, only : do_shum,do_sppt,do_skeb,nssppt,nsshum,nsskeb,sppt_logit,    & 
-                                lndp_type, n_var_lndp, n_var_spp, do_spp, spp_stddev_cutoff, spp_prt_list
+                                lndp_type, n_var_lndp
 use mpi_wrapper, only: is_rootpe
 implicit none
 
 ! Interface variables
 integer,                  intent(in) :: levs, kdt
-real(kind=kind_phys), intent(in) :: fhour
+real(kind=kind_dbl_prec), intent(in) :: fhour
 integer,                  intent(in) :: blksz(:)
-real(kind=kind_phys), intent(inout), optional :: sppt_wts(:,:,:)
-real(kind=kind_phys), intent(inout), optional :: shum_wts(:,:,:)
-real(kind=kind_phys), intent(inout), optional :: skebu_wts(:,:,:)
-real(kind=kind_phys), intent(inout), optional :: skebv_wts(:,:,:)
-real(kind=kind_phys), intent(inout), optional :: sfc_wts(:,:,:)
-real(kind=kind_phys), intent(inout), optional :: spp_wts(:,:,:,:)
-integer,                 intent(in), optional :: nthreads
+real(kind=kind_dbl_prec), intent(inout) :: sppt_wts(:,:,:)
+real(kind=kind_dbl_prec), intent(inout) :: shum_wts(:,:,:)
+real(kind=kind_dbl_prec), intent(inout) :: skebu_wts(:,:,:)
+real(kind=kind_dbl_prec), intent(inout) :: skebv_wts(:,:,:)
+real(kind=kind_dbl_prec), intent(inout) :: sfc_wts(:,:,:)
+integer,                  intent(in)    :: nthreads
 
-real(kind_dbl_prec),allocatable :: tmp_wts(:,:),tmpu_wts(:,:,:),tmpv_wts(:,:,:),tmpl_wts(:,:,:),tmp_spp_wts(:,:,:)
+real,allocatable :: tmp_wts(:,:),tmpu_wts(:,:,:),tmpv_wts(:,:,:), tmpl_wts(:,:,:)
 !D-grid
-integer :: k,v
+integer :: k
 integer j,ierr,i
 integer :: nblks, blk, len, maxlen
 character*120 :: sfile
 character*6   :: STRFH
 logical :: do_advance_pattern
-
-if ( (.NOT. do_sppt) .AND. (.NOT. do_shum) .AND. (.NOT. do_skeb) .AND. (lndp_type==0 ) .AND. (n_var_spp .le. 0)) return
+if ( (.NOT. do_sppt) .AND. (.NOT. do_shum) .AND. (.NOT. do_skeb) .AND. (lndp_type==0 ) ) return
 
 ! Update number of threads in shared variables in spectral_layout_mod and set block-related variables
 nblks = size(blksz)
@@ -441,23 +403,6 @@ if ( lndp_type .EQ. 2  ) then
     ENDDO
     deallocate(tmpl_wts)
 endif
-if (n_var_spp .GE. 1) then
-    allocate(tmp_spp_wts(gis_stochy%nx,gis_stochy%ny,n_var_spp))
-    call get_random_pattern_spp(rpattern_spp,nspp,gis_stochy,tmp_spp_wts)
-     DO v=1,n_var_spp
-       DO blk=1,nblks
-         len=blksz(blk)
-         DO k=1,levs
-           if (spp_stddev_cutoff(v).gt.0.0) then
-             spp_wts(blk,1:len,k,v)=MAX(MIN(tmp_spp_wts(1:len,blk,v)*vfact_spp(k),spp_stddev_cutoff(v)),-1.0*spp_stddev_cutoff(v))*spp_prt_list(v)
-           else
-             spp_wts(blk,1:len,k,v)=tmp_spp_wts(1:len,blk,v)*vfact_spp(k)*spp_prt_list(v)
-           endif
-         ENDDO
-       ENDDO
-     ENDDO
-    deallocate(tmp_spp_wts)
-endif
  deallocate(tmp_wts)
  deallocate(tmpu_wts)
  deallocate(tmpv_wts)
@@ -475,7 +420,7 @@ use stochy_namelist_def
 implicit none
 !type(ocean_grid_type),       intent(in) :: G
 real, intent(inout) :: sppt_wts(:,:),t_rp1(:,:),t_rp2(:,:)
-real(kind_dbl_prec), allocatable :: tmp_wts(:,:)
+real, allocatable :: tmp_wts(:,:)
 if (pert_epbl .OR. do_ocnsppt) then
    allocate(tmp_wts(gis_stochy_ocn%nx,gis_stochy_ocn%ny))
    if (pert_epbl) then
@@ -504,7 +449,6 @@ end subroutine run_stochastic_physics_ocn
 subroutine finalize_stochastic_physics()
 use stochy_data_mod, only : nshum,rpattern_shum,rpattern_sppt,nsppt,rpattern_skeb,nskeb,&
                             vfact_sppt,vfact_shum,vfact_skeb, skeb_vwts,skeb_vpts, &
-                            rpattern_spp, vfact_spp, nspp, &
                             rpattern_sfc, nlndp,gg_lats,gg_lons,sl,skebu_save,skebv_save,gis_stochy
 use spectral_transforms, only : lat1s_a ,lon_dims_a,wgt_a,sinlat_a,coslat_a,colrad_a,rcs2_a
 implicit none
@@ -530,10 +474,6 @@ implicit none
    endif
    if (nlndp > 0) then
       if (allocated(rpattern_sfc)) deallocate(rpattern_sfc)
-   endif
-   if (nspp > 0) then 
-      if (allocated(rpattern_spp)) deallocate(rpattern_spp)
-      if (allocated(vfact_spp)) deallocate(vfact_spp)
    endif
 
 deallocate(lat1s_a)

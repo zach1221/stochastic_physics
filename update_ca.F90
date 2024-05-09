@@ -3,7 +3,7 @@ module update_ca
 !read and write restart routines, to restart fields 
 !on the ncellsxncells CA grid
 
-use kinddef
+use kinddef,           only: kind_dbl_prec
 use halo_exchange,    only: atmosphere_scalar_field_halo
 use random_numbers,   only: random_01_CB
 use mpi_wrapper,      only: mype,mp_reduce_min,mp_reduce_max
@@ -34,7 +34,6 @@ integer,public :: isdnx_g,iednx_g,jsdnx_g,jednx_g
 integer,public :: iscnx_g,iecnx_g,jscnx_g,jecnx_g
 integer*8, public :: csum
 type(domain2D),public :: domain_sgs,domain_global
-logical, public  :: cold_start_ca_sgs=.true.,cold_start_ca_global=.true.
 
 
 contains
@@ -89,7 +88,7 @@ character(len=*), optional, intent(in)    :: timestamp
 character(len=32)  :: fn_ca = 'ca_data.nc'
 
 type(FmsNetcdfDomainFile_t) :: CA_restart
-integer :: id_restart,nx,ny,i
+integer :: id_restart,ncells,nx,ny,i
 integer :: is,ie,js,je,nca,nca_g
 
 integer, allocatable, dimension(:) :: buffer
@@ -184,25 +183,34 @@ endif
 
 end subroutine write_ca_restart
 
-subroutine read_ca_restart(domain_in,ncells,nca,ncells_g,nca_g)
+subroutine read_ca_restart(domain_in,scells,nca,ncells_g,nca_g)
 !Read restart files
 implicit none
 type(FmsNetcdfDomainFile_t) :: CA_restart
 type(domain2D), intent(inout) :: domain_in
-integer,intent(in) :: ncells,nca,nca_g,ncells_g
+integer,intent(in) :: scells,nca,nca_g,ncells_g
 character(len=32)  :: fn_ca = 'ca_data.nc'
 
 character(len=64) :: fname
 integer :: id_restart
 integer :: nxc,nyc,i
 real    :: pi,re,dx
-integer :: nx,ny
+integer :: ncells,nx,ny
 character(5)  :: indir='INPUT'
 logical :: amiopen
 integer, allocatable, dimension(:) :: io_layout(:)
 
 
+
+
 call mpp_get_global_domain(domain_in,xsize=nx,ysize=ny,position=CENTER)
+
+!Set time and length scales:                                                                                                                          
+ pi=3.14159
+ re=6371000.
+ dx=0.5*pi*re/real(nx)
+ ncells=int(dx/real(scells))
+ ncells= MIN(ncells,10)
 
  fname = trim(indir)//'/'//trim(fn_ca)
  if (nca .gt. 0 ) then
@@ -234,10 +242,8 @@ call mpp_get_global_domain(domain_in,xsize=nx,ysize=ny,position=CENTER)
       call mpp_error(NOTE,'reading CA_sgs restart data from INPUT/ca_data.tile*.nc')
       call read_restart(CA_restart)
       call close_file(CA_restart)
-      cold_start_ca_sgs=.false.
     else
       call mpp_error(NOTE,'No CA_sgs restarts - cold starting CA')
-      cold_start_ca_sgs=.true.
     endif
 endif
 
@@ -265,11 +271,9 @@ if (nca_g .gt. 0 ) then
       call mpp_error(NOTE,'reading CA_global restart data from INPUT/ca_data.tile*.nc')
       call read_restart(CA_restart)
       call close_file(CA_restart)
-      cold_start_ca_global=.false.
       
    else
       call mpp_error(NOTE,'No CA_global restarts - cold starting CA')
-      cold_start_ca_global=.true.
    endif
 endif
 
@@ -284,13 +288,13 @@ subroutine update_cells_sgs(kstep,initialize_ca,iseed_ca,first_flag,restart,firs
 implicit none
 
 integer, intent(in)  :: kstep,nxc,nyc,nlon,nlat,nxch,nych,nca,isc,iec,jsc,jec,npx,npy
-integer(8), intent(in) :: iseed_ca
+integer(kind=kind_dbl_prec), intent(in) :: iseed_ca
 integer, intent(in)  :: iini(nxc,nyc,nca),initialize_ca,ilives_in(nxc,nyc,nca)
 integer, intent(in)  :: mytile
-real(kind_phys), intent(out) :: CA(nlon,nlat)
+real,    intent(out) :: CA(nlon,nlat)
 integer, intent(out) :: ca_plumes(nlon,nlat)
 integer, intent(in)  :: nlives,nseed, nspinup, nf,ncells
-real(kind_phys), intent(in)  :: nfracseed
+real,    intent(in)  :: nfracseed
 logical, intent(in)  :: nca_plumes,restart,first_flag,first_time_step
 integer, allocatable  :: V(:),L(:),B(:)
 integer, allocatable  :: AG(:,:)
@@ -325,11 +329,9 @@ k_in=1
  
   if (.not. allocated(board))then
      allocate(board(nxc,nyc,nca))
-     board=0.0
   endif
   if (.not. allocated(lives))then
      allocate(lives(nxc,nyc,nca))
-     lives=0.0
   endif
   if(.not. allocated(board_halo))then
      allocate(board_halo(nxch,nych,1))
@@ -578,7 +580,7 @@ implicit none
 
 integer, intent(in) :: kstep,nxc,nyc,nlon,nlat,nxch,nych,nca,isc,iec,jsc,jec,npx,npy
 integer, intent(in) :: iini_g(nxc,nyc,nca), ilives_g(nxc,nyc)
-integer(8), intent(in) :: iseed_ca
+integer(kind=kind_dbl_prec), intent(in) :: iseed_ca
 real, intent(out) :: CA(nlon,nlat)
 logical, intent(in) :: first_time_step
 logical, intent(in) :: restart
@@ -609,7 +611,7 @@ k_in=1
  if (.not. allocated(lives_g)) allocate(lives_g(nxc,nyc,nca))
  if (.not. allocated(board_halo)) allocate(board_halo(nxch,nych,1))   
 
-  if(first_time_step .and. cold_start_ca_global)then
+  if(first_time_step .and. .not. restart)then
    do j=1,nyc
     do i=1,nxc
      board_g(i,j,nf) = iini_g(i,j,nf)
@@ -650,7 +652,7 @@ if(mod(kstep,nseed) == 0)then
    enddo
 endif
 
-  if(first_time_step .and. cold_start_ca_global)then
+  if(first_time_step .and. .not. restart)then
   spinup=nspinup
   else
   spinup = 1
