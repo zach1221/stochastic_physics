@@ -1,0 +1,174 @@
+a - atmosphere_stub.o
+a - compns_stochy.o
+a - fv_arrays_stub.o
+a - fv_control_stub.o
+a - fv_mp_stub_mod.o
+a - get_stochy_pattern.o
+a - kinddef.o
+a - lndp_apply_perts.o
+a - mersenne_twister.o
+a - mpi_wrapper.o
+a - spectral_transforms.o
+a - stochastic_physics.o
+a - stochy_data_mod.o
+a - stochy_internal_state_mod.o
+a - stochy_namelist_def.o
+a - stochy_patterngenerator.o
+
+Currently Loaded Modules:
+  1) sutils/default   6) hpc-mpich/3.3.2  11) netcdf/4.7.4
+  2) hpc/1.1.0        7) jasper/2.0.22    12) pio/2.5.2
+  3) gnu/9.2.0        8) zlib/1.2.11      13) esmf/8_2_0_beta_snapshot_14
+  4) hpc-gnu/9.2.0    9) png/1.6.35       14) fms/2021.03-avx
+  5) mpich/3.3.2     10) hdf5/1.10.6      15) modules.stoch_gnu
+
+ 
+
+0: NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to    32768.
+0: &MPP_IO_NML
+0:  HEADER_BUFFER_VAL=16384      ,
+0:  GLOBAL_FIELD_ON_ROOT_PE=T,
+0:  IO_CLOCKS_ON=F,
+0:  SHUFFLE=0          ,
+0:  DEFLATE_LEVEL=-1         ,
+0:  CF_COMPLIANCE=F,
+0:  /
+0: NOTE from PE     0: MPP_IO_SET_STACK_SIZE: stack size set to     131072.
+0: NOTE from PE     0: MPP_DOMAINS_SET_STACK_SIZE: stack size set to 40000000.
+2:  Cubic: cubed-sphere domain decomposition
+2: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+0:  Cubic: cubed-sphere domain decomposition
+0: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+0:   X-AXIS =   96
+0:   Y-AXIS =   96
+2:   X-AXIS =   96
+2:   Y-AXIS =   96
+3:  Cubic: cubed-sphere domain decomposition
+3: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+3:   X-AXIS =   96
+3:   Y-AXIS =   96
+1:  Cubic: cubed-sphere domain decomposition
+1: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+1:   X-AXIS =   96
+1:   Y-AXIS =   96
+4:  Cubic: cubed-sphere domain decomposition
+4: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+4:   X-AXIS =   96
+4:   Y-AXIS =   96
+5:  Cubic: cubed-sphere domain decomposition
+5: whalo =    3, ehalo =    3, shalo =    3, nhalo =    3
+5:   X-AXIS =   96
+5:   Y-AXIS =   96
+0:  Cubic: cubed-sphere domain decomposition
+0: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+0:   X-AXIS =   96
+0:   Y-AXIS =   96
+2:  Cubic: cubed-sphere domain decomposition
+2: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+2:   X-AXIS =   96
+2:   Y-AXIS =   96
+3:  Cubic: cubed-sphere domain decomposition
+3: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+3:   X-AXIS =   96
+3:   Y-AXIS =   96
+1:  Cubic: cubed-sphere domain decomposition
+1: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+1:   X-AXIS =   96
+1:   Y-AXIS =   96
+4:  Cubic: cubed-sphere domain decomposition
+4: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+4:   X-AXIS =   96
+4:   Y-AXIS =   96
+5:  Cubic: cubed-sphere domain decomposition
+5: whalo =    1, ehalo =    1, shalo =    1, nhalo =    1
+5:   X-AXIS =   96
+5:   Y-AXIS =   96
+0: 
+0: WARNING from PE     0: The function named string has been moved from fms_io_mod to fms_mod.  Please update your call.
+0: 
+1:  nx,ny=          96          96
+1:  calling init_stochastic_physics           3
+0:  nx,ny=          96          96
+0:  calling init_stochastic_physics           3
+0:   in compns_stochy
+0:  ntrunc not supplied, calculating
+0:  ntrunc calculated from l_min   500000.00000000000               80
+0:  NOTE ntrunc adjusted for even nlats          82
+0:  gaussian grid not set, defining here         504         248
+0:  no land perturbations selected
+0:  stochastic physics
+0:   do_sppt :  T
+0:   do_shum :  F
+0:   do_skeb :  F
+0:   lndp_type :            0
+4:  nx,ny=          96          96
+4:  calling init_stochastic_physics           3
+5:  nx,ny=          96          96
+5:  calling init_stochastic_physics           3
+3:  nx,ny=          96          96
+3:  calling init_stochastic_physics           3
+2:  nx,ny=          96          96
+2:  calling init_stochastic_physics           3
+1:  calling init         504         248          82
+0:  nsppt =            3
+0:  nshum =            0
+0:  nskeb =            0
+0:   nlndp   =            0
+0:  Initialize random pattern for SPPT
+0:  calling init         504         248          82
+0:  using seed           3                    3
+0:  using seed   200000003            200000003
+0:  using seed   300000003            300000003
+0:  back from init stochdata           0
+0:  sppt vert profile           1  0.96571110019743345        0.0000000000000000     
+0:  sppt vert profile           2  0.53994541609081936       0.32826134912800248     
+0:  sppt vert profile           3   7.4239202369200383E-002  0.65652269825600496     
+1:  back from init stochdata           0
+1:  workg_T82_504x248.tile02.nc T
+0:  workg_T82_504x248.tile01.nc T
+5:  calling init         504         248          82
+4:  calling init         504         248          82
+4:  back from init stochdata           0
+4:  workg_T82_504x248.tile05.nc T
+5:  back from init stochdata           0
+5:  workg_T82_504x248.tile06.nc T
+2:  calling init         504         248          82
+2:  back from init stochdata           0
+2:  workg_T82_504x248.tile03.nc T
+3:  calling init         504         248          82
+3:  back from init stochdata           0
+3:  workg_T82_504x248.tile04.nc T
+0:  SPPT_WTS=           1  0.99285889714905595     
+0:  writing sppt_wts=           1  0.99285889714905595     
+0:  SPPT_WTS=           2   1.0299569986748973     
+0:  SPPT_WTS=           3   1.0574945882800562     
+0:  SPPT_WTS=           4   1.0746643528955027     
+0:  SPPT_WTS=           5   1.1077815131889901     
+0:  SPPT_WTS=           6   1.1044397691918153     
+0:  SPPT_WTS=           7   1.0571166440585731     
+0:  SPPT_WTS=           8   1.0653844146779348     
+0:  SPPT_WTS=           9   1.0762374051832824     
+0:  SPPT_WTS=          10   1.1192828146596356     
+0:  writing out random pattern (min/max/size) -0.10742226764141252       0.21591186008925101             6972
+0:  writing out random pattern (min/max/size)  -5.9838198144893315E-002  0.17607867344763944             6972
+0:  writing out random pattern (min/max/size)  -3.3488324120551818E-002   4.7941644212419733E-002        6972
+0:  SPPT_WTS=          11   1.1106152536728899     
+0:  SPPT_WTS=          12   1.1162056390732087     
+0:  SPPT_WTS=          13   1.1634798181213348     
+0:  SPPT_WTS=          14   1.1391236838435459     
+0:  SPPT_WTS=          15   1.1550810293068845     
+0:  SPPT_WTS=          16   1.1182198156732543     
+0:  SPPT_WTS=          17   1.1126028787399267     
+0:  SPPT_WTS=          18   1.1267330675179275     
+0:  SPPT_WTS=          19   1.1113942411306295     
+0:  SPPT_WTS=          20   1.1071280330090847     
+0:  writing sppt_wts=          20   1.1071280330090847     
+0:  SPPT_WTS=          21   1.1642678810321452     
+0:  writing out random pattern (min/max/size) -0.16659931537231978       0.22017943819647293             6972
+0:  writing out random pattern (min/max/size)  -6.4114594717588833E-002  0.16638830630971138             6972
+0:  writing out random pattern (min/max/size)  -3.4257228454090967E-002   5.1435156251340541E-002        6972
+_______________________________________________________________
+Start Epilog on node h15c22 for job 59929412 :: Fri May 10 20:56:06 UTC 2024
+Job 59929412 finished for user Zachary.Shrader in partition hera with exit code 0:0
+_______________________________________________________________
+End Epilogue Fri May 10 20:56:06 UTC 2024

@@ -1,0 +1,144 @@
+========================================================================
+READ_ASCII_FILE: unknown
+READ_ASCII_FILE: File: input.nml
+========================================================================
+READ_INPUT_NML: unknown
+READ_INPUT_NML: input.nml 
+ &amip_interp_nml
+        interp_oi_sst = .true.
+        use_ncep_sst = .true.
+        use_ncep_ice = .false.
+        no_anom_sst = .false.
+        data_set = 'reynolds_oi',
+        date_out_of_range = 'climo',
+ /
+ 
+ &atmos_model_nml
+        blocksize = 32
+        chksum_debug = .false.
+        dycore_only = .false.
+        fhout = 1
+        fhmax = 800
+        fhmaxhf = -1
+        ccpp_suite = 'FV3_GFS_v15p2_coupled'
+ /
+ 
+ &diag_manager_nml
+        prepend_date = .F.
+ /
+ 
+ &fms_io_nml
+        checksum_required   = .false.
+        max_files_r = 100,
+        max_files_w = 100,
+ /
+ 
+ &fms_nml
+        clock_grain = 'ROUTINE',
+        domains_stack_size = 40000000,
+        print_memory_usage = .false.
+ /
+ 
+ &fv_grid_nml
+        grid_file = 'INPUT/grid_spec.nc'
+ /
+ 
+ &fv_core_nml
+        layout   = 1,1
+        io_layout = 1,1
+        npx      = 97,
+        npy      = 97,
+        ntiles   = 6,
+        grid_type = -1
+ /
+ 
+ &gfs_physics_nml
+        do_sppt        = .true.
+ /
+ &nam_stochy
+   SPPT=0.8,0.4,0.1
+   SPPT_TAU=21600,86400,216000
+   SPPT_LSCALE=500000,1000000,2000000
+   SPPT_LOGIT=.TRUE.,
+   SPPT_SFCLIMIT=.TRUE.,
+   ISEED_SPPT=3,
+   STOCHINI=.false.
+ /
+ &nam_sfcperts
+ /
+
+MPP module unknown
+MPP started with NPES=     6
+Using MPI library for message passing...
+Realtime clock resolution=  1.9000E-08 sec (  52631578 ticks/sec)
+Clock rolls over after   1.7524E+11 sec ( 9223372036854775806 ticks)
+
+MPP Parameter module unknown
+
+MPP Data module unknown
+
+MPP_DOMAINS module unknown
+&MPP_IO_NML
+ HEADER_BUFFER_VAL=16384      ,
+ GLOBAL_FIELD_ON_ROOT_PE=T,
+ IO_CLOCKS_ON=F,
+ SHUFFLE=0          ,
+ DEFLATE_LEVEL=-1         ,
+ CF_COMPLIANCE=F,
+ /
+
+MPP_IO module unknown
+
+Using netCDF library version 4.7.4 of Dec  2 2020 15:13:13 $
+
+================================================================================
+FMS_IO_MOD
+unknown
+
+================================================================================
+FMS_MOD
+unknown
+&FMS_NML
+ READ_ALL_PE=T,
+ CLOCK_GRAIN="ROUTINE         ",
+ CLOCK_FLAGS="NONE            ",
+ WARNING_LEVEL="warning ",
+ STACK_SIZE=0          ,
+ DOMAINS_STACK_SIZE=40000000   ,
+ PRINT_MEMORY_USAGE=F,
+ /
+ nml_error_codes=
+
+================================================================================
+CONSTANTS_MOD
+unknown
+
+================================================================================
+FV_CONTROL_MOD
+unknown
+&FV_GRID_NML
+ GRID_NAME="                                                                                ",
+ GRID_FILE="INPUT/grid_spec.nc                                                                                                      ",
+ /
+
+================================================================================
+FV_CONTROL_MOD
+unknown
+&FV_CORE_NML
+ NPX=97         ,
+ NPY=97         ,
+ NTILES=6          ,
+ LAYOUT= 2*1          ,
+ IO_LAYOUT= 2*1          ,
+ GRID_TYPE=-1         ,
+ /
+
+Cubic: cubed-sphere domain decomposition:     1 X    1
+   pe,   is,  ie,  js,  je,    isd, ied, jsd, jed
+
+Cubic: cubed-sphere domain decomposition:     1 X    1
+   pe,   is,  ie,  js,  je,    isd, ied, jsd, jed
+
+================================================================================
+fvGFS/ATMOSPHERE_MOD
+unknown

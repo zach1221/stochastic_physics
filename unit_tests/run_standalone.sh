@@ -33,13 +33,13 @@ mkdir -p RESTART
 #layout 1x4
 #cp input.nml.template input.nml
 sed -i -e "s/LOX/1/g" input.nml
-sed -i -e "s/LOY/4/g" input.nml
+sed -i -e "s/LOY/1/g" input.nml
 sed -i -e "s/NPX/$NPX/g" input.nml
 sed -i -e "s/NPY/$NPY/g" input.nml
 sed -i -e "s/RES/$RES/g" input.nml
 sed -i -e "s/_STOCHINI_/.false./g" input.nml
-export OMP_NUM_THREADS=2
+export OMP_NUM_THREADS=1
 module list
-time srun --label -n 24 standalone_stochy.x
+time srun --label -n 6 standalone_stochy.x 
 mkdir stochy_out
-mv workg* stochy_out                                 
+mv workg* stochy_out

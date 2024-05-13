@@ -1,0 +1,9 @@
+rm: cannot remove 'standalone_stochy.x': No such file or directory
+ar: creating libstochastic_physics.a
+0: 
+0: WARNING from PE     0: The function named string has been moved from fms_io_mod to fms_mod.  Please update your call.
+0: 
+
+real	0m3.016s
+user	0m0.016s
+sys	0m0.033s
