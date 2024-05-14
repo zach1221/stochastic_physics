@@ -54,6 +54,10 @@
        lndp_type      = 2
        n_var_lndp     = 2
 /
+
+&nam_sppperts
+
+/
 &nam_stochy
   SKEBNORM=1,
   SKEB_NPASS=30,
@@ -81,4 +85,5 @@
   iseed_lndp=4,5
   lndp_tau= 86400,
   lndp_lscale = 250000,
+  lndp_model_type = 1
 /
