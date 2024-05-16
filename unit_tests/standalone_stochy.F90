@@ -25,11 +25,11 @@ integer                 :: varidl(max_n_var_lndp)
 integer                 :: zt_dim_id,zt_var_id
 character*2             :: strid
 
-character(len=3), dimension(max_n_var_lndp)         ::  lndp_var_list
-real(kind=kind_dbl_prec), dimension(max_n_var_lndp) ::  lndp_prt_list
-character(len=10)    , dimension(max_n_var_spp) :: spp_var_list
-real(kind=kind_dbl_prec), dimension(max_n_var_spp) :: spp_prt_list
-real(kind=kind_dbl_prec), dimension(max_n_var_spp) :: spp_stddev_cutoff
+character(len=3),         allocatable :: lndp_var_list(:)
+real(kind=kind_dbl_prec), allocatable :: lndp_prt_list(:)
+character(len=10),        allocatable :: spp_var_list(:)
+real(kind=kind_dbl_prec), allocatable :: spp_prt_list(:)
+real(kind=kind_dbl_prec), allocatable :: spp_stddev_cutoff(:)
 include 'netcdf.inc'
 real :: ak(nlevs+1),bk(nlevs+1)
 real(kind=4) :: ts,undef
@@ -92,6 +92,13 @@ do_skeb=.false.
 do_spp =.false.
 read(nlunit,gfs_physics_nml)
 close(nlunit)
+
+!allocate spp and lnp arrays
+allocate(lndp_var_list(n_var_lndp))
+allocate(lndp_prt_list(n_var_lndp))
+allocate(spp_var_list(n_var_spp))
+allocate(spp_prt_list(n_var_spp))
+allocate(spp_stddev_cutoff(n_var_spp))
 ! define stuff
 pi=3.14159265359
 undef=9.99e+20
