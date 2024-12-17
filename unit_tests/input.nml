@@ -48,14 +48,18 @@
 /
 
 &gfs_physics_nml
+       do_spp         = .true.
        do_sppt        = .true.
        do_shum        = .true.
        do_skeb        = .true.
        lndp_type      = 2
        n_var_lndp     = 2
+       n_var_spp      = 5
+
 /
 
-&nam_sppperts
+&nam_sppperts       
+    
 
 /
 &nam_stochy
@@ -77,6 +81,7 @@
   ISEED_SKEB=2,
   ISEED_SPPT=3,
   STOCHINI=.false.
+
 /
 &nam_sfcperts
   lndp_type=2
